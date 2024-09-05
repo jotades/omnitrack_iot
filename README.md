@@ -14,3 +14,4 @@ The system consists of distributed and coordinated units placed on both generic 
     - Lights: NeoPixel Ring lights are used for visual feedback. These lights are programmable and can display a wide range of colors and patterns, making them suitable for signaling and user interface purposes. 
     Speaker Amplifier: The speaker amplifier is experimentally integrated to generate sound signal stimulating sound spatial orientation. 
 
+**Concept:**
