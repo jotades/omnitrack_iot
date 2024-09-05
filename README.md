@@ -15,3 +15,4 @@ The system consists of distributed and coordinated units placed on both generic 
     Speaker Amplifier: The speaker amplifier is experimentally integrated to generate sound signal stimulating sound spatial orientation. 
 
 **Concept:**
+![image](https://github.com/user-attachments/assets/961e26b9-bf1f-4304-b19f-f70473c14408)
