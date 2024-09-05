@@ -10,7 +10,7 @@ The system consists of distributed and coordinated units placed on both generic 
     - Orientation sensor: Data collected from IMU sensor (Inertial Measurement Unit) which include accelerometer and gyroscope are used for a comprehensive understanding of the device's orientation. 
 
 **Output:**
-    - Haptic: A vibrator motor is included to provide haptic feedback. This motor can be used in various applications, such as guiding users through     vibration in scenarios where auditory or visual signals might not be effective. 
+    - Haptic: A vibrator motor is included to provide haptic feedback. This motor can be used in various applications, such as guiding users through vibration in scenarios where auditory or visual signals might not be effective. 
     - Lights: NeoPixel Ring lights are used for visual feedback. These lights are programmable and can display a wide range of colors and patterns, making them suitable for signaling and user interface purposes. 
     Speaker Amplifier: The speaker amplifier is experimentally integrated to generate sound signal stimulating sound spatial orientation. 
 
