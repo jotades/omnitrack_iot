@@ -43,11 +43,11 @@ void newRange()
                 "\t Range: " + String(DW1000Ranging.getDistantDevice()->getRange()) +
                 " m\t RX power: " + String(DW1000Ranging.getDistantDevice()->getRXPower()) + " dBm";
 
-  // Update the BLE characteristic with the range data
-  pCharacteristic->setValue(data.c_str());
-  // Log the notification sending
-  Serial.println("Sending notification...");
-  pCharacteristic->notify();
+      //Update the BLE characteristic with the range data
+  //pCharacteristic->setValue(data.c_str());
+  //Log the notification sending
+  //Serial.println("Sending notification...");
+  //pCharacteristic->notify();
   
 }
 
