@@ -1,6 +1,8 @@
 #include <SPI.h>
 #include "DW1000Ranging.h"
 
+#include "bluetooth_module.h"
+
 //#include <BLEDevice.h>
 //#include <BLEUtils.h>
 //#include <BLEServer.h>
