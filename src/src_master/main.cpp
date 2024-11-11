@@ -3,7 +3,8 @@
 
 // Anchor address
 char anchor_addr[] = "84:00:5B:D5:A9:9A:E2:9C"; //#4
-uint16_t Adelay = 16495;
+//16495
+uint16_t Adelay = 16535;
 float prevValue = 0;
 float distCent;
 float filteredValue;
