@@ -37,9 +37,7 @@ void initializeBluetooth() {
 }
 
 void updateBluetoothData(const String &data) {
-  if (pCharacteristic) {
     pCharacteristic->setValue(data.c_str());
-    Serial.println("Sending notification...");
+    Serial.println("Sending notification");
     pCharacteristic->notify();
-  }
 }
