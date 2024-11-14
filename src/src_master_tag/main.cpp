@@ -124,4 +124,7 @@ void loop() {
 //--NOTE--
 //How to find the ttyACM port//ls -l /dev/ttyUSB* /dev/ttyACM*
 
+//Tomorrow--> Test bluetooth comunication on this code
+//            Test adelay value
+
 
