@@ -4,7 +4,7 @@
 // Anchor address
 char anchor_addr[] = "84:00:5B:D5:A9:9A:E2:9C"; //#4
 //16495
-uint16_t Adelay = 16535;
+uint16_t Adelay = 16535;//<--
 float prevValue = 0;
 float distCent;
 float filteredValue;
@@ -50,7 +50,7 @@ void setup()
   delay(1000); // wait for serial monitor to connect
   Serial.println("1-Anchor config and start");
   Serial.print("2-Antenna delay: ");
-  Serial.println(Adelay);
+  Serial.println(Adelay);//<--
   Serial.print("3-Calibration distance: ");
   Serial.println(dist_m);
 
@@ -58,7 +58,7 @@ void setup()
   DW1000Ranging.initCommunication(PIN_RST, PIN_SS, PIN_IRQ);
   Serial.println("4-DW1000Ranging initialized successfully");
 
-  DW1000.setAntennaDelay(Adelay);
+  DW1000.setAntennaDelay(Adelay);//<--
 
   DW1000Ranging.attachNewRange(newRange);
   DW1000Ranging.attachNewDevice(newDevice);
