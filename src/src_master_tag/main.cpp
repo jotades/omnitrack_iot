@@ -1,18 +1,22 @@
-#include <BluetoothSerial.h> // For Bluetooth communication
 #include <ArduinoJson.h>
 #include <SPI.h>
 #include <DW1000Ranging.h>
 #include "link.h"
+#include "bluetooth_module.h"
 
 // DEFINES
 //#define IS_ANCHOR
 #define IS_TAG
 
-// CONSTANTS
-#define DEVICE_ADDRESS "02:00:00:00:00:00:20:01" //Tag 10:XX  //Anchor 20:XX
+#ifdef IS_TAG
+#define DEVICE_ADDRESS "06:00:00:00:00:00:20:01" //Tag 10:XX 
+#endif
 
-// GLOBALS
-BluetoothSerial SerialBT; // Bluetooth Serial object
+#ifdef IS_ANCHOR
+#define DEVICE_ADDRESS "03:00:00:00:00:00:10:01" //Anchor 20:XX
+uint16_t Adelay = 16535;//<--
+#endif
+
 #ifdef IS_TAG
 struct MyLink *uwb_data;
 unsigned long lastUpdateTime = 0;
@@ -23,29 +27,25 @@ char shortAddress[6];
 
 #ifdef IS_TAG
 void send_json(struct MyLink *p) {
- 
-  StaticJsonDocument<500> doc;
-
-  doc["id"] = shortAddress;
+  //Write the JSON document to the serial port
+  JsonDocument doc;
+  doc["Tag"] = shortAddress;
 
   JsonArray links = doc.createNestedArray("links");
   struct MyLink *temp = p->next; // Skip head node if it's a dummy node
   while (temp != NULL) {
     JsonObject obj1 = links.createNestedObject();
-    obj1["a"] = temp->anchor_addr;
+    obj1["anchor"] = temp->anchor_addr;
     char range[5];
     sprintf(range, "%.2f", temp->range[0]);
-    obj1["r"] = range;
+    obj1["range"] = range;
     temp = temp->next;
   }
 
   serializeJson(doc, Serial);
   Serial.println("");
 
-  if (SerialBT.connected()) {
-    serializeJson(doc, SerialBT);
-    SerialBT.println();
-  }
+  updateBluetoothData(doc.as<JsonObject>());//<--
 }
 #endif
 
@@ -55,7 +55,6 @@ void newRange() {
 //   Serial.print(", Range: ");
 //   Serial.print(DW1000Ranging.getDistantDevice()->getRange());
 //   Serial.println("m");
-
 
   #ifdef IS_TAG
     update_link(uwb_data, DW1000Ranging.getDistantDevice()->getShortAddress(), DW1000Ranging.getDistantDevice()->getRange(), DW1000Ranging.getDistantDevice()->getRXPower());
@@ -82,17 +81,21 @@ void inactiveDevice(DW1000Device *device) {
 
 void setup() {
   Serial.begin(115200);
-  SerialBT.begin("ESP32-UWBRTLS"); // Set Bluetooth device name
+
+  initializeBluetooth();//<--
+
   Serial.println(__FILE__ __DATE__);
 
   SPI.begin(18, 19, 23);
   DW1000Ranging.initCommunication(27, 4, 34);
+  
   DW1000Ranging.attachNewRange(newRange);
   DW1000Ranging.attachNewDevice(newDevice);
   DW1000Ranging.attachInactiveDevice(inactiveDevice);
 
   #ifdef IS_ANCHOR
     DW1000Ranging.startAsAnchor(DEVICE_ADDRESS, DW1000.MODE_LONGDATA_RANGE_ACCURACY, false);
+    DW1000.setAntennaDelay(Adelay);//<--
     Serial.println("ANCHOR mode");
   #elif defined(IS_TAG)
     DW1000Ranging.startAsTag(DEVICE_ADDRESS, DW1000.MODE_LONGDATA_RANGE_ACCURACY, false);
@@ -124,7 +127,7 @@ void loop() {
 //--NOTE--
 //How to find the ttyACM port//ls -l /dev/ttyUSB* /dev/ttyACM*
 
-//Tomorrow--> Test bluetooth comunication on this code
-//            Test adelay value
+//Tomorrow--> V | Test bluetooth comunication on this code
+//            X | Test adelay value
 
 
