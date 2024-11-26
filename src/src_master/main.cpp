@@ -72,6 +72,3 @@ void loop()
 {
     DW1000Ranging.loop();
 }
-
-
-
