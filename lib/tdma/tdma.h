@@ -1,3 +1,4 @@
+// Updated TDMA.h
 #ifndef TDMA_H
 #define TDMA_H
 
@@ -5,7 +6,7 @@
 
 // TDMA Configuration
 #define TDMA_CYCLE_DURATION_MS 1000  // Total TDMA cycle duration in ms
-#define TDMA_NUM_SLOTS 3           // Number of slots in the TDMA cycle
+#define TDMA_NUM_SLOTS 2              // Number of slots in the TDMA cycle
 #define SLOT_DURATION_MS (TDMA_CYCLE_DURATION_MS / TDMA_NUM_SLOTS)
 
 // Assign slot to this device
@@ -46,4 +47,5 @@ void synchronizeWithAnchor(unsigned long anchorTimestamp) {
     Serial.print("Synchronization Offset: ");
     Serial.println(globalTimeOffset);
 }
+
 #endif // TDMA_H
