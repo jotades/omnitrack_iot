@@ -40,9 +40,9 @@ void sendJsonToSerial(const char *event, const char *key, float value, const cha
 
 void newRange(DW1000Device *device)
 {
-  Serial.print("from: ");
-  Serial.print(device->getShortAddress(), HEX);
-  Serial.print(", ");
+  // Serial.print("from: ");
+  // Serial.print(device->getShortAddress(), HEX);
+  // Serial.print(", ");
 
 #define NUMBER_OF_DISTANCES 1
   float dist = 0.0;
@@ -50,9 +50,9 @@ void newRange(DW1000Device *device)
         dist += device->getRange();
 }
   dist = dist/NUMBER_OF_DISTANCES;
-  // Serial.println(dist);
+  //Serial.println(dist);
   // Send JSON document
- sendJsonToSerial("new_range", "distance", dist, String(device->getShortAddress(), HEX).c_str());
+  sendJsonToSerial("new_range", "distance", dist, String(device->getShortAddress(), HEX).c_str());
 }
 void newDevice(DW1000Device *device)
 {
@@ -79,7 +79,7 @@ void setup()
   // Init the configuration
   SPI.begin(SPI_SCK, SPI_MISO, SPI_MOSI);
   DW1000Ranging.init(BoardType::ANCHOR, shortAddress, macAddress, false, MY_MODE, PIN_RST, PIN_SS, PIN_IRQ);
-
+  
   // Set antenna delay for anchors
   DW1000.setAntennaDelay(Adelay);
 
@@ -91,5 +91,5 @@ void setup()
 
 void loop()
 {
-  DW1000Ranging.loop();
+   DW1000Ranging.loop();
 }

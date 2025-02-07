@@ -1,7 +1,8 @@
 #include <SPI.h>
 #include "DW1000Ranging.h"
-//#include <Adafruit_I2CDevice.h> for DW3000
-//#include <Adafruit_Sensor.h>    for DW3000
+#include <ArduinoJson.h>
+// #include <Adafruit_I2CDevice.h> //for DW3000
+// #include <Adafruit_Sensor.h>    //for DW3000
 #include "bluetooth_module.h"
 
 
@@ -31,12 +32,15 @@ void newRange()
   Serial.print(DW1000Ranging.getDistantDevice()->getRXPower());
   Serial.println(" dBm");
 
+  StaticJsonDocument<200> jsonDoc;
+  jsonDoc["Tag"] = String(DW1000Ranging.getDistantDevice()->getShortAddress(), HEX);
+  jsonDoc["Range"] = DW1000Ranging.getDistantDevice()->getRange();
   // Create a string to hold the range data
-  data = "TAG: from: " + String(DW1000Ranging.getDistantDevice()->getShortAddress(), HEX) +
-                "\t Range: " + String(DW1000Ranging.getDistantDevice()->getRange()) +
-                " m\t RX power: " + String(DW1000Ranging.getDistantDevice()->getRXPower()) + " dBm";
+  // data = "TAG: from: " + String(DW1000Ranging.getDistantDevice()->getShortAddress(), HEX) +
+  //               "\t Range: " + String(DW1000Ranging.getDistantDevice()->getRange()) +
+  //               " m\t RX power: " + String(DW1000Ranging.getDistantDevice()->getRXPower()) + " dBm";
 
-  updateBluetoothData(data);
+  updateBluetoothData(jsonDoc.as<JsonObject>());
 }
 
 void newDevice(DW1000Device *device)
@@ -77,6 +81,4 @@ void setup()
 void loop()
 {
   DW1000Ranging.loop();
-  DW1000Ranging.attachNewRange(newRange);
-
 }

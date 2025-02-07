@@ -2,7 +2,7 @@
 #include "DW1000Ranging.h"
 
 // Anchor address
-char anchor_addr[] = "84:00:5B:D5:A9:9A:E2:9C"; //#4
+char anchor_addr[] = "53:00:5B:D5:A9:9A:E2:8C"; //#4
 //16495
 uint16_t Adelay = 16535;//<--
 float prevValue = 0;
@@ -31,7 +31,6 @@ void newRange()
     Serial.print(DW1000Ranging.getDistantDevice()->getRXPower());
     Serial.println(" dBm");
 }
-
 void newDevice(DW1000Device *device)
 {
   Serial.print("Device added: ");
@@ -43,7 +42,6 @@ void inactiveDevice(DW1000Device *device)
   Serial.print("Delete inactive device: ");
   Serial.println(device->getShortAddress(), HEX);
 }
-
 void setup()
 {
   Serial.begin(115200);
@@ -71,4 +69,5 @@ void setup()
 void loop()
 {
     DW1000Ranging.loop();
+    DW1000Ranging.attachNewRange(newRange);
 }
