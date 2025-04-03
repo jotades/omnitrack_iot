@@ -4,57 +4,44 @@
 #include <utility/imumaths.h>
 #include <SPI.h>
 
-/* This driver uses the Adafruit unified sensor library (Adafruit_Sensor),
-   which provides a common 'type' for sensor data and some helper functions.
-
-   To use this driver you will also need to download the Adafruit_Sensor
-   library and include it in your libraries folder.
-
-   You should also assign a unique ID to this sensor for use with
-   the Adafruit Sensor API so that you can identify this particular
-   sensor in any data logs, etc.  To assign a unique ID, simply
-   provide an appropriate value in the constructor below (12345
-   is used by default in this example).
-
-   Connections
-   ===========
-   Connect SCL to analog 5
-   Connect SDA to analog 4
-   Connect VDD to 3.3-5V DC
-   Connect GROUND to common ground
-
-   History
-   =======
-   2015/MAR/03  - First release (KTOWN)
-*/
-
 /* Set the delay between fresh samples */
 uint16_t BNO055_SAMPLERATE_DELAY_MS = 100;
 
+// Define custom SDA and SCL pins for the default bus
+#define I2C_SDA 33  // Use GPIO 16 for SDA
+#define I2C_SCL 32  // Use GPIO 17 for SCL
+
+TwoWire I2C_1 = TwoWire(0);  // Initialize the first I2C bus (I2C_1)
+//TwoWire I2C_2 = TwoWire(1);  // Initialize the second I2C bus (I2C_2)
+
 // Check I2C device address and correct line below (by default address is 0x29 or 0x28)
 //                                   id, address
-Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28, &Wire);
+Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28, &I2C_1);
 
 void setup(void)
 {
   Serial.begin(115200);
-
   while (!Serial) delay(10);  // wait for serial port to open!
+  Serial.println("Orientation Sensor Test");
+  Serial.println("");
 
-  Serial.println("Orientation Sensor Test"); Serial.println("");
+  // Initialize I2C with custom SDA and SCL pins for the default I2C bus
+  I2C_1.begin(I2C_SDA, I2C_SCL,100000);  // Use SDA on GPIO 16 and SCL on GPIO 17
 
-  /* Initialise the sensor */
-  if (!bno.begin())
+  // Optional: Initialize the second I2C bus (if needed for other devices)
+     //I2C_1.begin(16, 17);  // Example: SDA = GPIO 21, SCL = GPIO 22
+     //I2C_2.begin(16, 17);  // Example: SDA = GPIO 18, SCL = GPIO 19
+  bool status;
+  // Initialize the BNO055 sensor using the default I2C bus (Wire)
+  status = bno.begin(); 
+  if (!status)
   {
-    /* There was a problem detecting the BNO055 ... check your connections */
     Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
     while (1);
   }
 
-  delay(1000);
+  delay(1000);  // Wait a little before starting the sensor data collection
 }
-
-
 
 void printEvent(sensors_event_t* event) {
   double x = -1000000, y = -1000000 , z = -1000000; //dumb values, easy to spot problem
